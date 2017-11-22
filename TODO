@@ -1,2 +1,3 @@
 Add makefile
 Finish README, including project report/results
+Add functionality in strassen to set breakpoint in command line. Currently is hard-coded at 70.
