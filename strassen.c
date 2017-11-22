@@ -3,7 +3,6 @@
 #include <time.h>
 #include <string.h>
 
-// helper
 int** make_matrix (int dim)
 {
 	int** C = malloc(dim*sizeof(int*));
@@ -12,7 +11,7 @@ int** make_matrix (int dim)
 	return C;
 }
 
-// standard algorithm for matrix multiplication
+// standard algorithm
 int** standard (int** A, int** B, int dim)
 {
 	int** C = make_matrix (dim);
@@ -63,7 +62,6 @@ int** c00 (int** A, int** B, int** p2, int** p4, int** p5, int dim)
 	
 	int** b_d = make_matrix(sub_dim);
 	int** g_h = make_matrix(sub_dim);
-	
 	for(int i = 0; i < sub_dim; i ++)
 	{
 		for(int j = 0; j < sub_dim; j++)
@@ -291,14 +289,12 @@ int** p5 (int** A, int** B, int dim)
 	return p5;
 }
 
-// main function for strassen
+// main function
 int** strassen (int** A, int** B, int dim)
 {
 	int** C = NULL;
 
 	int sub_dim = dim/2;
-	
-	// no padding if even-number dimension
 	if(dim % 2 == 0)
 	{
 		C = make_matrix(dim);
@@ -353,9 +349,8 @@ int** strassen (int** A, int** B, int dim)
 	    free(A);
 	    free(B);
 	}
-	
-	// padding for odd dimension
 	else
+		// padding
 	{
 		int pad_dim = dim + 1;
 		int** A_pad = make_matrix(pad_dim);
@@ -445,11 +440,12 @@ int** strassen (int** A, int** B, int dim)
 
 int main(int argc, char *argv[])
 {
-    if(argc != 4){
+    if(argc != 3){
+    	printf("Run with: strassen [dimension] [matrices.txt]\n");
         return 1;
     }
-    int dim = atoi(argv[2]);
-    const char* inputfile = argv[3];
+    int dim = atoi(argv[1]);
+    const char* inputfile = argv[2];
 
 	int** A = make_matrix(dim);
 	int** B = make_matrix(dim);
@@ -502,14 +498,17 @@ int main(int argc, char *argv[])
     
 	int fclose(FILE *fp);
     
-    //clock_t begin = clock();
+    clock_t begin = clock();
     
     int **strass = multiply(A, B, dim);
     
-    //clock_t end = clock();
-    //double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-    //printf("strassen: %f \n", time_spent);
-    for (int i = 0; i < dim; i++)
+    clock_t end = clock();
+    double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+    printf("strassen: %f \n", time_spent);
+	
+	// prints out diagonal values in product matrix -- used for confirming correct answer, 
+	// i.e. that the algorithm is working
+    /* for (int i = 0; i < dim; i++)
     {
         for (int j = 0; j < dim; j++)
         {
@@ -517,8 +516,8 @@ int main(int argc, char *argv[])
         		continue;
             printf("%i \n", strass[i][j]);
         }
-    }
-    
+    } */
+	
     for (int i = 0; i < dim; i++)
     {
         free(strass[i]);
