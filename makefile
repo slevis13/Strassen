@@ -1,0 +1,1 @@
+all	:	strassen standard matrix_gen
