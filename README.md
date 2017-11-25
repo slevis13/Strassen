@@ -1,4 +1,4 @@
-# strassen-algorithm
+# Strassen's Algorithm
 An implementation of Strassen's algorithm. Efficiently multiplies matrices using a divide-and-conquer approach.
 
 ## Background
