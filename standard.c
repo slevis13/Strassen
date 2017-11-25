@@ -58,6 +58,10 @@ int main(int argc, char *argv[])
 	
 	FILE *fp;
 	fp = fopen(inputfile, "r");
+	if (fp == NULL){
+        printf("Could not open file %s \n", inputfile);
+        return 0;
+    }
 	
 	char buf[sizeof(int)+1];
     

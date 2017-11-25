@@ -3,6 +3,8 @@
 #include <time.h>
 #include <string.h>
 
+int breakpoint;
+
 int** make_matrix (int dim)
 {
 	int** C = malloc(dim*sizeof(int*));
@@ -45,7 +47,7 @@ int** strassen (int** A, int** B, int dim);
 int** multiply (int** A, int** B, int dim)
 {
     int** C = NULL;
-	if(dim <= 70)
+	if(dim <= breakpoint)
 	{
 	    C = standard(A, B, dim);
 	}
@@ -440,12 +442,13 @@ int** strassen (int** A, int** B, int dim)
 
 int main(int argc, char *argv[])
 {
-    if(argc != 3){
-    	printf("Run with: strassen [dimension] [matrices.txt]\n");
+    if(argc != 4){
+    	printf("Run with: strassen [breakpoint] [dimension] matrices.txt\n");
         return 1;
     }
-    int dim = atoi(argv[1]);
-    const char* inputfile = argv[2];
+	breakpoint = atoi(argv[1]);
+    int dim = atoi(argv[2]);
+    const char* inputfile = argv[3];
 
 	int** A = make_matrix(dim);
 	int** B = make_matrix(dim);
@@ -454,11 +457,17 @@ int main(int argc, char *argv[])
 	
 	FILE *fp;
 	fp = fopen(inputfile, "r");
+	if (fp == NULL){
+        printf("Could not open file %s \n", inputfile);
+        return 0;
+    }
 	
 	char buf[sizeof(int)+1];
     
     int row = 0;
     int col = 0;
+	
+	// store values as matrices A and B
     while(row < dim)
     {
         char c;
@@ -498,6 +507,7 @@ int main(int argc, char *argv[])
     
 	int fclose(FILE *fp);
     
+	// time algorithm
     clock_t begin = clock();
     
     int **strass = multiply(A, B, dim);
